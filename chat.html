@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #chat { margin: 20px; }
+        #messages { border: 1px solid #ddd; padding: 10px; height: 300px; overflow-y: scroll; }
+        #message-input { width: 100%; padding: 10px; }
+    </style>
+</head>
+<body>
+    <div id="chat">
+        <div id="messages"></div>
+        <input id="message-input" type="text" placeholder="Type a message..." />
+    </div>
+
+    <script>
+        const socket = new WebSocket('ws://naochan83275.github.io:80');
+
+        socket.addEventListener('open', () => {
+            console.log('Connected to the WebSocket server');
+        });
+
+        socket.addEventListener('message', (event) => {
+            const messagesDiv = document.getElementById('messages');
+            const message = document.createElement('div');
+            message.textContent = event.data;
+            messagesDiv.appendChild(message);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto-scroll to bottom
+        });
+
+        socket.addEventListener('close', () => {
+            console.log('Disconnected from the WebSocket server');
+        });
+
+        document.getElementById('message-input').addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                const input = event.target;
+                const message = input.value;
+                socket.send(message);
+                input.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
