@@ -1,0 +1,14 @@
+#chat-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#messages-container {
+    max-height: 400px;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+}
+
+#message-input {
+    margin-right: 10px;
+}
