@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebRTC Text Chat</title>
+    <title>WebRTC Text Chat (サーバーレス)</title>
     <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -11,7 +11,7 @@
 
     <section class="section">
         <div class="container">
-            <h1 class="title">WebRTC Text Chat</h1>
+            <h1 class="title">WebRTC Text Chat (サーバーレス)</h1>
 
             <div id="chat-container">
                 <div class="box" id="messages-container">
@@ -25,6 +25,18 @@
                     <div class="control">
                         <button class="button is-link" id="send-button">Send</button>
                     </div>
+                </div>
+
+                <div id="signaling-info">
+                    <h2 class="subtitle">シグナリング情報</h2>
+                    <textarea id="offer-sdp" class="textarea" placeholder="相手に送るSDP"></textarea>
+                    <button id="send-offer" class="button is-primary">Offerを送信</button>
+
+                    <textarea id="answer-sdp" class="textarea" placeholder="自分が受け取ったSDP"></textarea>
+                    <button id="send-answer" class="button is-success">Answerを送信</button>
+
+                    <textarea id="ice-candidates" class="textarea" placeholder="交換したICE候補"></textarea>
+                    <button id="send-ice" class="button is-info">ICE候補を送信</button>
                 </div>
             </div>
         </div>
