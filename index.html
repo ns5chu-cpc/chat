@@ -3,45 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat App</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            margin: 0;
-        }
-        #chat {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
-            border: 1px solid #ccc;
-            overflow-y: auto;
-            background-color: #f9f9f9;
-        }
-        #messageInput {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: auto;
-            display: flex;
-        }
-        #input {
-            flex: 1;
-            padding: 10px;
-        }
-        #sendButton {
-            padding: 10px;
-        }
-    </style>
+    <title>WebRTC Text Chat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="chat"></div>
-    <div id="messageInput">
-        <input type="text" id="input" placeholder="Type your message...">
-        <button id="sendButton">Send</button>
-    </div>
+
+    <section class="section">
+        <div class="container">
+            <h1 class="title">WebRTC Text Chat</h1>
+
+            <div id="chat-container">
+                <div class="box" id="messages-container">
+                    <!-- Messages will appear here -->
+                </div>
+
+                <div class="field is-grouped">
+                    <div class="control is-expanded">
+                        <input class="input" type="text" id="message-input" placeholder="Type a message">
+                    </div>
+                    <div class="control">
+                        <button class="button is-link" id="send-button">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <script src="app.js"></script>
 </body>
 </html>
