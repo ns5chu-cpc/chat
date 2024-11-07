@@ -12,3 +12,12 @@
 #message-input {
     margin-right: 10px;
 }
+
+#signaling-info {
+    margin-top: 20px;
+}
+
+textarea {
+    width: 100%;
+    margin-bottom: 10px;
+}
