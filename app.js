@@ -1,46 +1,61 @@
-// app.js
+let localConnection;
+let sendChannel;
+let receiveChannel;
 
-const chat = document.getElementById('chat');
-const input = document.getElementById('input');
-const sendButton = document.getElementById('sendButton');
+const messageInput = document.getElementById('message-input');
+const sendButton = document.getElementById('send-button');
+const messagesContainer = document.getElementById('messages-container');
 
-// ローカルストレージからメッセージを読み込み
-function loadMessages() {
-    const messages = JSON.parse(localStorage.getItem('messages')) || [];
-    messages.forEach(message => {
-        const messageElement = document.createElement('div');
-        messageElement.textContent = message;
-        chat.appendChild(messageElement);
-    });
-    chat.scrollTop = chat.scrollHeight;
-}
+// メッセージの送信
+sendButton.addEventListener('click', sendMessage);
 
-// メッセージをローカルストレージに保存
-function saveMessage(message) {
-    const messages = JSON.parse(localStorage.getItem('messages')) || [];
-    messages.push(message);
-    localStorage.setItem('messages', JSON.stringify(messages));
+// WebRTCの接続作成
+function startConnection() {
+    localConnection = new RTCPeerConnection();
+    sendChannel = localConnection.createDataChannel('sendDataChannel');
+    
+    // 受信チャンネル
+    localConnection.ondatachannel = receiveChannelCallback;
+
+    // WebRTCのofferを生成
+    localConnection.createOffer()
+        .then(offer => {
+            return localConnection.setLocalDescription(offer);
+        })
+        .then(() => {
+            // OfferのSDPを受け取って、相手に送信
+            // (ここでは単にコンソールに表示して、後で実際のシグナリングを追加する)
+            console.log(localConnection.localDescription);
+        })
+        .catch(err => {
+            console.error('Error creating offer:', err);
+        });
 }
 
 // メッセージ送信
-sendButton.addEventListener('click', function() {
-    const message = input.value;
+function sendMessage() {
+    const message = messageInput.value;
     if (message.trim() !== '') {
-        saveMessage(message);
-        const messageElement = document.createElement('div');
-        messageElement.textContent = message;
-        chat.appendChild(messageElement);
-        chat.scrollTop = chat.scrollHeight;
-        input.value = '';
+        sendChannel.send(message);
+        displayMessage('You', message);
+        messageInput.value = '';
     }
-});
+}
 
-// Enterキーでメッセージを送信
-input.addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        sendButton.click();
-    }
-});
+// メッセージ表示
+function displayMessage(sender, message) {
+    const messageElement = document.createElement('div');
+    messageElement.textContent = `${sender}: ${message}`;
+    messagesContainer.appendChild(messageElement);
+}
 
-// 初期メッセージを読み込む
-loadMessages();
+// 受信チャンネルのコールバック
+function receiveChannelCallback(event) {
+    receiveChannel = event.channel;
+    receiveChannel.onmessage = function(event) {
+        displayMessage('Peer', event.data);
+    };
+}
+
+// ページロード時に接続を開始
+window.onload = startConnection;
